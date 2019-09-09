@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js'></script>
+
+
+    <script type="text/javascript">  
+
+    var ClickViewModel = function () {
+            var _this = this;
+            this.name = ko.observable();
+            this.email = ko.observable();
+            this.phone = ko.observable();
+            this.id = ko.observable(0);
+            var vD;
+
+            this.anotherObservableArray = ko.observableArray([
+                ]);
+            this.edit = ko.observable(false);
+
+            this.addRow = function () { // Thêm 1 hàng
+
+                let id = this.anotherObservableArray().length + 1;// push (giá trị của các biến observable) vào ObservableArray, 
+                this.anotherObservableArray.push({
+                        name    : this.name  (),
+                        email   : this.email (),
+                        id      : _this.id(),
+                        phone   : _this.phone()
+                    })
+                _this.id(id); //gán lại cho các biến observable này bằng rỗng
+                _this.name("");
+                _this.email("");
+                _this.phone("");
+
+            };
+
+            this.editRow = function (viewModel) { // đổ giá trị của viewModel vào các biến observable
+                vD= viewModel;
+                _this.name(viewModel.name);
+                _this.email(viewModel.email);
+                _this.id(viewModel.id); 
+                _this.phone(viewModel.phone);
+                _this.edit(true);
+
+            };
+            
+            this.saveRow = function() {
+                var arr = this.anotherObservableArray();
+                for(var i = 0; i < arr.length; i++ )
+                {
+                    if(arr[i].id == vD.id)
+                    {
+                        arr[i].name=this.name();
+                        arr[i].email=this.email();
+                        arr[i].phone=this.phone();
+                    }
+                }
+                this.anotherObservableArray([]);
+                this.anotherObservableArray(arr);
+            };
+
+            this.deleteRow = function (viewModel) {
+                console.log('viewModel =', viewModel);
+                _this.anotherObservableArray.remove(viewModel);
+            };
+            
+            
+        };
+    $(function() {
+             ko.applyBindings(new ClickViewModel()); //Để HTML hiểu data-binding
+    });
+    </script>
+    <title>Person</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Danh Sách CTV</h1>
+        <p>Đây là danh sách cộng tác viên của công ty Hahalolo</p> 
+        <form>
+            <input type="text" id="name"  data-bind='value:name , uniqueName: true' placeholder="Name">
+            <input type="text" id="email" data-bind="value:email" placeholder="Email">
+            <input type="text" id="phone" data-bind="value:phone" placeholder="Phone">
+            <input type="button" class="btn btn-success" value="Add Row" data-bind='click: addRow'>
+            <input type="button" class="btn btn-success" value="Save Row" data-bind='click: saveRow'>
+        </form>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Edit or delete</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: anotherObservableArray ">
+                <tr>
+                    <td data-bind="text: id"></td>
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: email"></td>
+                    <td data-bind="text: phone"></td>
+                    <td>
+                        <button type="button" class="btn  btn-success" data-bind='click: $parent.editRow'>Edit</button>
+                        <button type="button" class="btn  btn-danger" data-bind='click: $parent.deleteRow'>Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

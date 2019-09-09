@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DEMO</title>
+    <script src="./js/asset/jquery-3.3.1.min.js"> </script>
+    <script src="./js/asset/underscore-min.js"> </script>
+    <script src="./js/asset/backbone-min.js"> </script>
+    <script src="./js/asset/knockout-3.4.2.js"> </script>
+    <script src="./js/asset/knockback.min.js"> </script>
+
+    <script src="./js/funcKnockout.js"> </script>
+
+</head>
+
+<body>
+    <!--
+    <h1 data-bind="text:monkey">Monkey</h1>
+    <input type="text" data-bind="value:monkey, valueUpdate: 'afterkeydown' ">
+    <input type="submit" data-bind="click: addAnimal">
+    <ul data-bind="foreach: array">
+        <li data-bind="text: $data"></li>
+    </ul>
+
+    <script>
+        var vm = {
+            monkey: ko.observable(),//create observable
+            array: ko.observableArray(),// Initially an empty array
+            addAnimal: function () {
+                this.array.push(this.monkey());// Adds the value and notifies observers
+            }
+        };
+        vm.array.push('Gorila');
+        vm.array.push('KingKong');
+        vm.monkey("Giraffe");
+        ko.applyBindings(vm);//Bind the ViewModel to the View
+    </script>
+-->
+
+    <div>Account ID
+        <select id="ddlAcounts" data-bind="options:Accounts, optionsText:'Name',optionValue:'Id' "></select>
+        Total number of accounts: <span data-bind="text:Accounts().length"></span>
+        <hr>
+        <h3>Select account detail</h3>
+        Id: <span data-bind="text:Accounts()[SelectedAccountIndex()].Id"></span><br>
+        Name: <span data-bind="text:Accounts()[SelectedAccountIndex()].Name"></span><br>
+        Balance: <span data-bind="text:Accounts()[SelectedAccountIndex()].Balance"></span><br>
+        <input type="button" id="btnShowDetails" value="ShowDetails">
+        <hr>
+        Amount:<input type="button" id="txtAmount">
+        <input type="button" id="btnDeposit" value="Deposit">
+        New Balance: <input type="text" data-bind="value:Balance">
+
+
+        <hr>
+        New ID: <input type="text" id="txtNewId" value=""><br>
+        New Name: <input type="text" id="txtNewName" value=""><br>
+        New Balance: <input type="text" id="txtNewBalance" value=""><br>
+        <input type="button" id="btnAddAccount" value="Add Account">
+
+    </div>
+    <script>
+        function Account(id, name, balance) {
+            this.Id = id;
+            this.Name = name;
+            this.Balance = balance;
+        }
+        function AccountViewModel(acc) {
+            this.Id = acc.Id;
+            this.Name = acc.Name;
+            this.Balance = ko.observable(acc.Balance);
+            var a1 = new Account(1, "A1", 1000)
+            var a2 = new Account(2, "A2", 2200)
+            var a3 = new Account(3, "A3", 1200)
+            this.Accounts = ko.observableArray([a1, a2, a3])
+
+        }
+        var acc = new Account(1, "A4", 10000);
+        var accViewModel = new AccountViewModel(acc);
+        ko.applyBindings(accViewModel);
+    </script>
+    <div>Last name: <input type="text" name="txtLastName"><br></div>
+</body>
+
+
+</html>
